@@ -1,0 +1,416 @@
+[
+  {
+    "title": "God Only Knows",
+    "artist": "The Beach Boys",
+    "melody_rating": 6,
+    "instrumentation_rating": 4,
+    "storytelling_rating": 6,
+    "atmosphere_rating": 5,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Good Vibrations",
+    "artist": "The Beach Boys",
+    "melody_rating": 5,
+    "instrumentation_rating": 4,
+    "storytelling_rating": 6,
+    "atmosphere_rating": 4,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Wouldn't It Be Nice",
+    "artist": "The Beach Boys",
+    "melody_rating": 4,
+    "instrumentation_rating": 4,
+    "storytelling_rating": 4,
+    "atmosphere_rating": 4,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "The Winner Takes It All",
+    "artist": "ABBA",
+    "melody_rating": 6,
+    "instrumentation_rating": 7,
+    "storytelling_rating": 8,
+    "atmosphere_rating": 7,
+    "production_bonus_rating": 0.5
+  },
+  {
+    "title": "Song For Whomever",
+    "artist": "The Beautiful South",
+    "melody_rating": 4,
+    "instrumentation_rating": 4,
+    "storytelling_rating": 6,
+    "atmosphere_rating": 5,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Sweet Little Sixteen",
+    "artist": "Chuck Berry",
+    "melody_rating": 5,
+    "instrumentation_rating": 6,
+    "storytelling_rating": 6,
+    "atmosphere_rating": 8,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Mess Around",
+    "artist": "Ray Charles",
+    "melody_rating": 6,
+    "instrumentation_rating": 6,
+    "storytelling_rating": 6,
+    "atmosphere_rating": 6,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Let It Rock",
+    "artist": "Chuck Berry",
+    "melody_rating": 6,
+    "instrumentation_rating": 6,
+    "storytelling_rating": 7,
+    "atmosphere_rating": 7,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Brand New Cadillac",
+    "artist": "The Clash",
+    "melody_rating": 8,
+    "instrumentation_rating": 7,
+    "storytelling_rating": 8,
+    "atmosphere_rating": 7,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Rock 'n' Roll High School",
+    "artist": "Ramones",
+    "melody_rating": 8,
+    "instrumentation_rating": 8,
+    "storytelling_rating": 6,
+    "atmosphere_rating": 8,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Jailhouse Rock",
+    "artist": "Elvis Presley",
+    "melody_rating": 8,
+    "instrumentation_rating": 6,
+    "storytelling_rating": 7,
+    "atmosphere_rating": 7,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "You Never Can Tell",
+    "artist": "Chuck Berry",
+    "melody_rating": 7,
+    "instrumentation_rating": 5,
+    "storytelling_rating": 8,
+    "atmosphere_rating": 5,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Rockaway Beach",
+    "artist": "Ramones",
+    "melody_rating": 6,
+    "instrumentation_rating": 6,
+    "storytelling_rating": 5,
+    "atmosphere_rating": 7,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Land of 1000 Dances",
+    "artist": "Wilson Pickett",
+    "melody_rating": 5,
+    "instrumentation_rating": 6,
+    "storytelling_rating": 5,
+    "atmosphere_rating": 5,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Tutti-Frutti",
+    "artist": "MC5",
+    "melody_rating": 6,
+    "instrumentation_rating": 6,
+    "storytelling_rating": 4,
+    "atmosphere_rating": 7,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Born To Be Wild",
+    "artist": "Steppenwolf",
+    "melody_rating": 7,
+    "instrumentation_rating": 7,
+    "storytelling_rating": 8,
+    "atmosphere_rating": 9,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Big Boys",
+    "artist": "Chuck Berry",
+    "melody_rating": 6,
+    "instrumentation_rating": 6,
+    "storytelling_rating": 6,
+    "atmosphere_rating": 5,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Heartbreak Hotel",
+    "artist": "Elvis Presley",
+    "melody_rating": 7,
+    "instrumentation_rating": 7,
+    "storytelling_rating": 8,
+    "atmosphere_rating": 6,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "I Fought the Law",
+    "artist": "The Bobby Fuller Four",
+    "melody_rating": 7,
+    "instrumentation_rating": 7,
+    "storytelling_rating": 9,
+    "atmosphere_rating": 8,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Sheena Is a Punk Rocker",
+    "artist": "Ramones",
+    "melody_rating": 6,
+    "instrumentation_rating": 7,
+    "storytelling_rating": 8,
+    "atmosphere_rating": 8,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Summer in the City",
+    "artist": "The Lovin' Spoonful",
+    "melody_rating": 6,
+    "instrumentation_rating": 6,
+    "storytelling_rating": 6,
+    "atmosphere_rating": 5,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Dust My Broom",
+    "artist": "Elmore James",
+    "melody_rating": 4,
+    "instrumentation_rating": 5,
+    "storytelling_rating": 6,
+    "atmosphere_rating": 4,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Hound Dog",
+    "artist": "Elvis Presley",
+    "melody_rating": 6,
+    "instrumentation_rating": 5,
+    "storytelling_rating": 7,
+    "atmosphere_rating": 6,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Molly's Lips",
+    "artist": "Nirvana",
+    "melody_rating": 5,
+    "instrumentation_rating": 6,
+    "storytelling_rating": 6,
+    "atmosphere_rating": 6,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Istanbul (Not Constantinople)",
+    "artist": "They Might Be Giants",
+    "melody_rating": 8,
+    "instrumentation_rating": 9,
+    "storytelling_rating": 9,
+    "atmosphere_rating": 8,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "California Sun",
+    "artist": "Ramones",
+    "melody_rating": 5,
+    "instrumentation_rating": 5,
+    "storytelling_rating": 5,
+    "atmosphere_rating": 6,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Some Kinda Hate",
+    "artist": "Misfits",
+    "melody_rating": 6,
+    "instrumentation_rating": 6,
+    "storytelling_rating": 7,
+    "atmosphere_rating": 7,
+    "production_bonus_rating": -0.5
+  },
+  {
+    "title": "Black Hole Sun",
+    "artist": "Soundgarden",
+    "melody_rating": 8,
+    "instrumentation_rating": 7,
+    "storytelling_rating": 10,
+    "atmosphere_rating": 9,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "She's Lost Control",
+    "artist": "Joy Division",
+    "melody_rating": 4,
+    "instrumentation_rating": 3,
+    "storytelling_rating": 7,
+    "atmosphere_rating": 6,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Jannie Jones",
+    "artist": "The Clash",
+    "melody_rating": 7,
+    "instrumentation_rating": 6,
+    "storytelling_rating": 6,
+    "atmosphere_rating": 5,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Psycho Killer",
+    "artist": "Talking Heads",
+    "melody_rating": 7,
+    "instrumentation_rating": 8,
+    "storytelling_rating": 8,
+    "atmosphere_rating": 6,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "The Thing",
+    "artist": "Pixies",
+    "melody_rating": 4,
+    "instrumentation_rating": 3,
+    "storytelling_rating": 5,
+    "atmosphere_rating": 5,
+    "production_bonus_rating": -0.5
+  },
+  {
+    "title": "I Believe in Miracles",
+    "artist": "Ramones",
+    "melody_rating": 4,
+    "instrumentation_rating": 5,
+    "storytelling_rating": 6,
+    "atmosphere_rating": 6,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Ziggy Stardust",
+    "artist": "David Bowie",
+    "melody_rating": 4,
+    "instrumentation_rating": 5,
+    "storytelling_rating": 2,
+    "atmosphere_rating": 3,
+    "production_bonus_rating": -0.5
+  },
+  {
+    "title": "Warsaw",
+    "artist": "Joy Division",
+    "melody_rating": 4,
+    "instrumentation_rating": 5,
+    "storytelling_rating": 4,
+    "atmosphere_rating": 3,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Burning Down the House",
+    "artist": "Talking Heads",
+    "melody_rating": 2,
+    "instrumentation_rating": 3,
+    "storytelling_rating": 2,
+    "atmosphere_rating": 3,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Dumb",
+    "artist": "Nirvana",
+    "melody_rating": 7,
+    "instrumentation_rating": 7,
+    "storytelling_rating": 8,
+    "atmosphere_rating": 8,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Bullet With Butterfly Wings",
+    "artist": "The Smashing Pumpkins",
+    "melody_rating": 9,
+    "instrumentation_rating": 9,
+    "storytelling_rating": 10,
+    "atmosphere_rating": 9,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "I Wanna Be Sedated",
+    "artist": "Ramones",
+    "melody_rating": 8,
+    "instrumentation_rating": 8,
+    "storytelling_rating": 8,
+    "atmosphere_rating": 7,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "This Must Be the Place (Naive Melody)",
+    "artist": "Talking Heads",
+    "melody_rating": 4,
+    "instrumentation_rating": 5,
+    "storytelling_rating": 5,
+    "atmosphere_rating": 5,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Zero",
+    "artist": "The Smashing Pumpkins",
+    "melody_rating": 7,
+    "instrumentation_rating": 6,
+    "storytelling_rating": 8,
+    "atmosphere_rating": 7,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Striken",
+    "artist": "Disturbed",
+    "melody_rating": 6,
+    "instrumentation_rating": 6,
+    "storytelling_rating": 5,
+    "atmosphere_rating": 5,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Before I Forget",
+    "artist": "Slipknot",
+    "melody_rating": 8,
+    "instrumentation_rating": 7,
+    "storytelling_rating": 8,
+    "atmosphere_rating": 8,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Duality",
+    "artist": "Slipknot",
+    "melody_rating": 7,
+    "instrumentation_rating": 7,
+    "storytelling_rating": 8,
+    "atmosphere_rating": 7,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Electric Feel",
+    "artist": "Turbowolf",
+    "melody_rating": 6,
+    "instrumentation_rating": 5,
+    "storytelling_rating": 5,
+    "atmosphere_rating": 6,
+    "production_bonus_rating": 0
+  },
+  {
+    "title": "Shellshock",
+    "artist": "Tank",
+    "melody_rating": 7,
+    "instrumentation_rating": 6,
+    "storytelling_rating": 5,
+    "atmosphere_rating": 6,
+    "production_bonus_rating": 0
+  }
+]

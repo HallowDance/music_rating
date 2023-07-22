@@ -1,0 +1,31 @@
+<!-- templates/statistics.html -->
+
+{% extends "base.html" %}
+
+{% block title %}
+    Song Ratings - Statistics
+{% endblock %}
+
+{% block content %}
+    <div class="statistics-container">
+        <h1 class="statistics-title">Song Statistics</h1>
+        <div class="statistics-item">
+            <p>Number of Songs: {{ num_songs }}</p>
+            <p>Mean Average Rating: {{ total_average | round(2) }}</p>
+            <p>Melody Standard Deviation: {{ melody_std_dev | round(2) }}</p>
+            <p>Instrumentation Standard Deviation: {{ instrumentation_std_dev | round(2) }}</p>
+            <p>Storytelling Standard Deviation: {{ storytelling_std_dev | round(2) }}</p>
+            <p>Atmosphere Standard Deviation: {{ atmosphere_std_dev | round(2) }}</p>
+            <p>Production Bonus Average: {{ total_production_bonus | round(2) }}</p>
+            <p>Production Bonus Standard Deviation: {{ production_bonus_std_dev | round(2) }}</p>
+        </div>
+        <br>
+        <div class="statistics-item">
+            <h2 class="statistics-title">Average Rating Histogram</h2>
+            <img src="{{ url_for('static', filename='histogram.png') }}" alt="Average Rating Histogram">
+        </div>
+    </div>
+    <br>
+    <a href="{{ url_for('index') }}" class="button">Back to Song List</a>
+{% endblock %}
+

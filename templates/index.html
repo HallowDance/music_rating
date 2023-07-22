@@ -1,0 +1,49 @@
+<!-- index.html -->
+
+{% extends "base.html" %}
+
+{% block title %}
+    Song Ratings
+{% endblock %}
+
+{% block content %}
+    <div class="song-table-container"> <!-- Add a container div -->
+    <h1>Welcome to the Song Rating App</h1>
+    <table class="song-table">
+        <tr>
+            <th>Title</th>
+            <th>Artist</th>
+            <th>Melody</th>
+            <th>Instrumentation</th>
+            <th>Storytelling</th>
+            <th>Atmosphere</th>
+            <th>Production Bonus</th>
+            <th>Average</th>
+            <th>Action</th>
+        </tr>
+        <!-- Table content -->
+        {% for song in songs %}
+        {% set average_rating = ((song.melody_rating + song.instrumentation_rating + song.storytelling_rating + song.atmosphere_rating) / 4) + song.production_bonus_rating %}
+        <tr class="{% if average_rating >= 7.5 %}green-row{% elif
+          average_rating <= 2.5 %}yellow-row{% endif %}">
+            <td>{{ song.title }}</td>
+            <td>{{ song.artist }}</td>
+            <td>{{ song.melody_rating }}</td>
+            <td>{{ song.instrumentation_rating }}</td>
+            <td>{{ song.storytelling_rating }}</td>
+            <td>{{ song.atmosphere_rating }}</td>
+            <td>{{ song.production_bonus_rating }}</td>
+            <td>{{ average_rating }}</td>
+            <td><a href="{{ url_for('edit_song', song_id=songs.index(song) + 1) }}">Edit</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+    <div class="right-align">
+        <a href="{{ url_for('add_song') }}" class="button">Add New Song</a> <!-- Styled as a button -->
+    </div>
+    <div class="statistics-link">
+        <a href="{{ url_for('statistics') }}" class="button">Song Statistics</a> <!-- Styled as a button -->
+    </div>
+{% endblock %}
+

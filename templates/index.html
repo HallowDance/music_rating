@@ -7,6 +7,14 @@
 {% endblock %}
 
 {% block content %}
+    <div class="buttons-container"> <!-- Add a container div for the buttons -->
+    <a href="{{ url_for('add_song') }}" class="button">Add New Song</a> <!--
+   Styled as a button --> <a href="{{ url_for('statistics') }}"
+    class="button">Song Statistics</a> <!-- Styled as a button --> </div> <!--
+   Close the container div -->
+    </div>
+
+
     <div class="song-table-container"> <!-- Add a container div -->
     <h1>Welcome to the Song Rating App</h1>
     <table class="song-table">

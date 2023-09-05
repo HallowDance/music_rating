@@ -1,7 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, flash, url_for
+from werkzeug.exceptions import abort
 import json
 import os
+from spotify_api import create_spotify_client, get_currently_playing_song
 import matplotlib.pyplot as plt
+
+
 
 app = Flask(__name__)
 
@@ -23,49 +27,118 @@ else:
     songs = []
 
 
-@app.route('/')
+# Store song information in memory
+stored_song_info = {"title": "", "artist": ""}
+
+@app.route("/", methods=["GET", "POST"])
 def index():
-    return render_template('index.html', songs=songs)
+
+    if request.method == "POST":
+        title = request.form["title"]
+        artist = request.form["artist"]
+        melody_rating = int(request.form["melody_rating"])
+        instrumentation_rating = int(request.form["instrumentation_rating"])
+        storytelling_rating = int(request.form["storytelling_rating"])
+        atmosphere_rating = int(request.form["atmosphere_rating"])
+        production_bonus_rating = float(request.form["production_bonus_rating"])
+
+        # Add the new song to the list of songs
+        new_song = {
+            "title": title,
+            "artist": artist,
+            "melody_rating": melody_rating,
+            "instrumentation_rating": instrumentation_rating,
+            "storytelling_rating": storytelling_rating,
+            "atmosphere_rating": atmosphere_rating,
+            "production_bonus_rating": production_bonus_rating,
+        }
+        songs.append(new_song)
+
+        # Save the updated list of songs back to the JSON file
+        with open("songs_data.json", "w") as file:
+            json.dump(songs, file)
+
+        # Update the stored_song_info dictionary with the new song information
+        stored_song_info["title"] = title
+        stored_song_info["artist"] = artist
+
+        # Calculate the average rating
+        average_rating = (
+            (melody_rating + instrumentation_rating + storytelling_rating + atmosphere_rating) / 4
+            + production_bonus_rating
+        ) / 5
+
+        return redirect(url_for("index"))
+
+    return render_template("index.html", song_info=stored_song_info, songs=songs)
 
 
-@app.route('/add_song', methods=['GET', 'POST'])
+@app.route("/store_song_info", methods=["POST"])
+def store_song_info():
+    data = request.form
+    title = data.get("title")
+    artist = data.get("artist")
+    print(title, artists)
+
+    if title and artist:
+        stored_song_info["title"] = title
+        stored_song_info["artist"] = artist
+
+        return "Song information stored successfully.", 200
+
+    return "Failed to store song information.", 400
+
+@app.route('/add', methods=['GET', 'POST'])
 def add_song():
     if request.method == 'POST':
+        # This block of code will execute when the form is submitted with data (POST request).
+        # It handles adding the new song to the songs list.
+
+        # Retrieve the form data
         title = request.form['title']
         artist = request.form['artist']
+        melody_rating = int(request.form['melody'])
+        instrumentation_rating = int(request.form['instrumentation'])
+        storytelling_rating = int(request.form['storytelling'])
+        atmosphere_rating = int(request.form['atmosphere'])
+        production_bonus_rating = float(request.form['production_bonus'])
 
-        # Check if the song with the same title and artist already exists
-        existing_song = next((song for song in songs if song['title'] == title and song['artist'] == artist), None)
-        if existing_song:
-            flash('This song already exists in the database.', 'error')
-        else:
-            melody_rating = int(request.form['melody_rating'])
-            instrumentation_rating = int(request.form['instrumentation_rating'])
-            storytelling_rating = int(request.form['storytelling_rating'])
-            atmosphere_rating = int(request.form['atmosphere_rating'])
-            production_bonus_rating = float(request.form['production_bonus_rating'])
+        # Check if the song already exists in the list
+        for song in songs:
+            if song['title'] == title and song['artist'] == artist:
+                flash(f"The song '{title}' by {artist} already exists in the list.")
+                return redirect('/add')
 
-            new_song = {
-                'title': title,
-                'artist': artist,
-                'melody_rating': melody_rating,
-                'instrumentation_rating': instrumentation_rating,
-                'storytelling_rating': storytelling_rating,
-                'atmosphere_rating': atmosphere_rating,
-                'production_bonus_rating': production_bonus_rating
-            }
+        # Create a new song dictionary with the provided details and ratings
+        new_song = {
+            'title': title,
+            'artist': artist,
+            'melody_rating': melody_rating,
+            'instrumentation_rating': instrumentation_rating,
+            'storytelling_rating': storytelling_rating,
+            'atmosphere_rating': atmosphere_rating,
+            'production_bonus_rating': production_bonus_rating
+        }
+        songs.append(new_song)
 
-            songs.append(new_song)
+        # Save the updated data back to the JSON file
+        with open('songs_data.json', 'w') as file:
+            json.dump(songs, file)
 
-            # Save the updated data back to the JSON file
-            with open('songs_data.json', 'w') as file:
-                json.dump(songs, file)
+        # Redirect to the homepage after adding the song
+        return redirect('/')
+    else:
+        # This block of code will execute when the form is requested (GET request).
+        # It displays the form where users can add a new song.
 
-            flash('Song added successfully!', 'success')
+        # Get the currently playing song info from Spotify API
+        sp = create_spotify_client()
+        song_title, artist_name = get_currently_playing_song(sp)
+        print(song_title, artist_name)
 
-            return redirect(url_for('index'))
+        # Render the add_song.html template and pass the currently playing song info as context variables
+        return render_template('add_song.html', song_title=song_title, artist_name=artist_name)
 
-    return render_template('add_song.html')
 
 @app.route('/edit_song/<int:song_id>', methods=['GET', 'POST'])
 def edit_song(song_id):

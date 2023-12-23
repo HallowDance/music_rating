@@ -5,8 +5,8 @@ import time
 
 def create_spotify_client():
     # Set your Spotify credentials as environment variables
-    os.environ["SPOTIPY_CLIENT_ID"] = "2314a5baf151457885b04665720ae742"
-    os.environ["SPOTIPY_CLIENT_SECRET"] = "814ef862141f4b2fb9b95d262b5d88f4"
+    os.environ["SPOTIPY_CLIENT_ID"] = "" # input your credentials here
+    os.environ["SPOTIPY_CLIENT_SECRET"] = "" # and here
     os.environ["SPOTIPY_REDIRECT_URI"] = "http://localhost:8080"  # Redirect URI for authentication
 
     # Create a Spotify API client with OAuth authentication

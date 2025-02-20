@@ -8,7 +8,6 @@ A web application to store and manage your music ratings.
 - **User Authentication**: Secure login system to manage personal ratings.
 - **Spotify Integration**: Fetches currently playing tracks from Spotify.
 - **Rating System**: Allows users to rate and comment on songs.
-- **Notification Service**: Notifies users about new releases from favorite artists.
 
 ## Installation
 

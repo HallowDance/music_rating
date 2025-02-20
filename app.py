@@ -1,13 +1,27 @@
 from flask import Flask, render_template, request, redirect, flash, url_for
+from flask_httpauth import HTTPBasicAuth
 from werkzeug.exceptions import abort
 import json
 import os
 from spotify_api import create_spotify_client, get_currently_playing_song
 import matplotlib.pyplot as plt
+from dotenv import load_dotenv
 
-
+# Load env variables
+load_dotenv()
 
 app = Flask(__name__)
+auth = HTTPBasicAuth()
+
+user = os.getenv("FLASK_USERNAME")
+password = os.getenv("FLASK_PASSWORD")
+
+
+@auth.verify_password
+def verify(username, password):
+    if username == user and password == password:
+        return username
+
 
 # Set the secret key for flash messages
 app.secret_key = 'samosex_prostosex'  # Replace 'your_secret_key' with a secure secret key
@@ -31,6 +45,7 @@ else:
 stored_song_info = {"title": "", "artist": ""}
 
 @app.route("/", methods=["GET", "POST"])
+@auth.login_required
 def index():
 
     if request.method == "POST":
@@ -241,5 +256,6 @@ def statistics():
                            production_bonus_std_dev=production_bonus_std_dev)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    #app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)
 

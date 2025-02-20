@@ -2,17 +2,21 @@ import os
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import time
+from dotenv import load_dotenv
+
+# Load environment
+load_dotenv()
 
 def create_spotify_client():
-    # Set your Spotify credentials as environment variables
-    os.environ["SPOTIPY_CLIENT_ID"] = "2314a5baf151457885b04665720ae742"
-    os.environ["SPOTIPY_CLIENT_SECRET"] = "814ef862141f4b2fb9b95d262b5d88f4"
-    os.environ["SPOTIPY_REDIRECT_URI"] = "http://localhost:8080"  # Redirect URI for authentication
-
     # Create a Spotify API client with OAuth authentication
-    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope="user-read-currently-playing user-read-playback-state"))
-
+    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
+        client_id=os.getenv("SPOTIPY_CLIENT_ID"),
+        client_secret=os.getenv("SPOTIPY_CLIENT_SECRET"),
+        redirect_uri=os.getenv("SPOTIPY_REDIRECT_URI"),
+        scope="user-read-currently-playing user-read-playback-state"
+    ))
     return sp
+
 
 def get_currently_playing_song(sp):
     # Get the currently playing track

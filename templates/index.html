@@ -1,57 +1,103 @@
-<!-- index.html -->
-
 {% extends "base.html" %}
 
-{% block title %}
-    Song Ratings
-{% endblock %}
+{% block title %}Library{% endblock %}
+
+{# colour class for an individual 1-10 rating #}
+{% macro score_class(v) -%}
+{%- if v <= 3 -%}s-low{%- elif v <= 6 -%}s-mid{%- elif v <= 8 -%}s-good{%- else -%}s-high{%- endif -%}
+{%- endmacro %}
+
+{# colour class for the (possibly fractional) average #}
+{% macro avg_class(v) -%}
+{%- if v < 4 -%}s-low{%- elif v < 6 -%}s-mid{%- elif v < 8 -%}s-good{%- else -%}s-high{%- endif -%}
+{%- endmacro %}
 
 {% block content %}
-    <div class="buttons-container"> <!-- Add a container div for the buttons -->
-    <a href="{{ url_for('add_song') }}" class="button">Add New Song</a> <!--
-   Styled as a button --> <a href="{{ url_for('statistics') }}"
-    class="button">Song Statistics</a> <!-- Styled as a button --> </div> <!--
-   Close the container div -->
+    <div class="page-head">
+        <div>
+            <h1>Your Library</h1>
+            <p class="subtitle">{{ songs|length }} song{{ '' if songs|length == 1 else 's' }} rated across melody, instrumentation, storytelling &amp; atmosphere.</p>
+        </div>
+        <div class="actions">
+            <a href="{{ url_for('statistics') }}" class="button btn-ghost">📊 Statistics</a>
+            <a href="{{ url_for('add_song') }}" class="button">+ Add Song</a>
+        </div>
     </div>
 
-
-    <div class="song-table-container"> <!-- Add a container div -->
-    <h1>Welcome to the Song Rating App</h1>
-    <table class="song-table">
-        <tr>
-            <th>Title</th>
-            <th>Artist</th>
-            <th>Melody</th>
-            <th>Instrumentation</th>
-            <th>Storytelling</th>
-            <th>Atmosphere</th>
-            <th>Production Bonus</th>
-            <th>Average</th>
-            <th>Action</th>
-        </tr>
-        <!-- Table content -->
-        {% for song in songs %}
-        {% set average_rating = ((song.melody_rating + song.instrumentation_rating + song.storytelling_rating + song.atmosphere_rating) / 4) + song.production_bonus_rating %}
-        <tr class="{% if average_rating >= 7.5 %}green-row{% elif
-          average_rating <= 2.5 %}yellow-row{% endif %}">
-            <td>{{ song.title }}</td>
-            <td>{{ song.artist }}</td>
-            <td>{{ song.melody_rating }}</td>
-            <td>{{ song.instrumentation_rating }}</td>
-            <td>{{ song.storytelling_rating }}</td>
-            <td>{{ song.atmosphere_rating }}</td>
-            <td>{{ song.production_bonus_rating }}</td>
-            <td>{{ average_rating }}</td>
-            <td><a href="{{ url_for('edit_song', song_id=songs.index(song) + 1) }}">Edit</a></td>
-        </tr>
-        {% endfor %}
-    </table>
+    {% if songs %}
+    <div class="table-wrap">
+        <div class="toolbar">
+            <div class="search">
+                <span class="ico">🔎</span>
+                <input type="text" id="song-search" placeholder="Search by title or artist…" autocomplete="off">
+            </div>
+            <span class="count-pill" id="count-pill">{{ songs|length }} shown</span>
+        </div>
+        <div class="table-scroll">
+        <table class="song-table" id="song-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Artist</th>
+                    <th>Melody</th>
+                    <th>Instrum.</th>
+                    <th>Story</th>
+                    <th>Atmos.</th>
+                    <th>Bonus</th>
+                    <th>Average</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for song in songs %}
+                {% set average_rating = ((song.melody_rating + song.instrumentation_rating + song.storytelling_rating + song.atmosphere_rating) / 4) + song.production_bonus_rating %}
+                <tr>
+                    <td class="title-cell">{{ song.title }}</td>
+                    <td class="artist-cell">{{ song.artist }}</td>
+                    <td><span class="score {{ score_class(song.melody_rating) }}">{{ song.melody_rating }}</span></td>
+                    <td><span class="score {{ score_class(song.instrumentation_rating) }}">{{ song.instrumentation_rating }}</span></td>
+                    <td><span class="score {{ score_class(song.storytelling_rating) }}">{{ song.storytelling_rating }}</span></td>
+                    <td><span class="score {{ score_class(song.atmosphere_rating) }}">{{ song.atmosphere_rating }}</span></td>
+                    <td class="bonus {% if song.production_bonus_rating > 0 %}pos{% elif song.production_bonus_rating < 0 %}neg{% endif %}">
+                        {{ '+' if song.production_bonus_rating > 0 else '' }}{{ song.production_bonus_rating }}
+                    </td>
+                    <td><span class="avg {{ avg_class(average_rating) }}">{{ average_rating | round(2) }}</span></td>
+                    <td><a class="edit-link" href="{{ url_for('edit_song', song_id=songs.index(song) + 1) }}">✎ Edit</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
     </div>
-    <div class="right-align">
-        <a href="{{ url_for('add_song') }}" class="button">Add New Song</a> <!-- Styled as a button -->
+    {% else %}
+    <div class="card card-pad empty">
+        <div class="big">🎵</div>
+        <h2>No songs yet</h2>
+        <p>Start building your collection by rating your first track.</p>
+        <a href="{{ url_for('add_song') }}" class="button" style="margin-top:12px;">+ Add your first song</a>
     </div>
-    <div class="statistics-link">
-        <a href="{{ url_for('statistics') }}" class="button">Song Statistics</a> <!-- Styled as a button -->
-    </div>
+    {% endif %}
 {% endblock %}
 
+{% block scripts %}
+<script>
+    $(function () {
+        $("#song-table").tablesorter({ sortList: [[7, 1]] });
+
+        var $rows = $("#song-table tbody tr");
+        var $pill = $("#count-pill");
+        $("#song-search").on("input", function () {
+            var q = $(this).val().toLowerCase().trim();
+            var shown = 0;
+            $rows.each(function () {
+                var title = $(this).find(".title-cell").text().toLowerCase();
+                var artist = $(this).find(".artist-cell").text().toLowerCase();
+                var match = title.indexOf(q) > -1 || artist.indexOf(q) > -1;
+                $(this).toggle(match);
+                if (match) shown++;
+            });
+            $pill.text(shown + " shown");
+        });
+    });
+</script>
+{% endblock %}

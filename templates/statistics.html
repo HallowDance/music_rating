@@ -1,31 +1,61 @@
-<!-- templates/statistics.html -->
-
 {% extends "base.html" %}
 
-{% block title %}
-    Song Ratings - Statistics
-{% endblock %}
+{% block title %}Statistics{% endblock %}
 
 {% block content %}
-    <div class="statistics-container">
-        <h1 class="statistics-title">Song Statistics</h1>
-        <div class="statistics-item">
-            <p>Number of Songs: {{ num_songs }}</p>
-            <p>Mean Average Rating: {{ total_average | round(2) }}</p>
-            <p>Melody Standard Deviation: {{ melody_std_dev | round(2) }}</p>
-            <p>Instrumentation Standard Deviation: {{ instrumentation_std_dev | round(2) }}</p>
-            <p>Storytelling Standard Deviation: {{ storytelling_std_dev | round(2) }}</p>
-            <p>Atmosphere Standard Deviation: {{ atmosphere_std_dev | round(2) }}</p>
-            <p>Production Bonus Average: {{ total_production_bonus | round(2) }}</p>
-            <p>Production Bonus Standard Deviation: {{ production_bonus_std_dev | round(2) }}</p>
+    <div class="page-head">
+        <div>
+            <h1>Statistics</h1>
+            <p class="subtitle">An overview of your ratings across the whole library.</p>
         </div>
-        <br>
-        <div class="statistics-item">
-            <h2 class="statistics-title">Average Rating Histogram</h2>
-            <img src="{{ url_for('static', filename='histogram.png') }}" alt="Average Rating Histogram">
+        <a href="{{ url_for('index') }}" class="button btn-ghost">← Back to Library</a>
+    </div>
+
+    <div class="stat-grid">
+        <div class="stat">
+            <div class="label">Songs Rated</div>
+            <div class="value">{{ num_songs }}</div>
+        </div>
+        <div class="stat">
+            <div class="label">Mean Rating</div>
+            <div class="value">{{ total_average | round(2) }}</div>
+            <div class="sub">average across dimensions</div>
+        </div>
+        <div class="stat">
+            <div class="label">Production Bonus</div>
+            <div class="value">{{ '+' if total_production_bonus > 0 else '' }}{{ total_production_bonus | round(2) }}</div>
+            <div class="sub">average bonus</div>
+        </div>
+        <div class="stat">
+            <div class="label">Melody · σ</div>
+            <div class="value">{{ melody_std_dev | round(2) }}</div>
+            <div class="sub">standard deviation</div>
+        </div>
+        <div class="stat">
+            <div class="label">Instrumentation · σ</div>
+            <div class="value">{{ instrumentation_std_dev | round(2) }}</div>
+            <div class="sub">standard deviation</div>
+        </div>
+        <div class="stat">
+            <div class="label">Storytelling · σ</div>
+            <div class="value">{{ storytelling_std_dev | round(2) }}</div>
+            <div class="sub">standard deviation</div>
+        </div>
+        <div class="stat">
+            <div class="label">Atmosphere · σ</div>
+            <div class="value">{{ atmosphere_std_dev | round(2) }}</div>
+            <div class="sub">standard deviation</div>
+        </div>
+        <div class="stat">
+            <div class="label">Bonus · σ</div>
+            <div class="value">{{ production_bonus_std_dev | round(2) }}</div>
+            <div class="sub">standard deviation</div>
         </div>
     </div>
-    <br>
-    <a href="{{ url_for('index') }}" class="button">Back to Song List</a>
-{% endblock %}
 
+    <div class="card chart-card">
+        <h2>Rating Distribution</h2>
+        <p class="subtitle" style="margin-bottom:16px;">How each dimension's scores are spread across the 1–10 scale.</p>
+        <img src="{{ url_for('static', filename='histogram.png') }}?v={{ num_songs }}" alt="Rating distribution histogram">
+    </div>
+{% endblock %}

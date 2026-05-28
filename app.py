@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request, redirect, flash, url_for
 from flask_httpauth import HTTPBasicAuth
 from werkzeug.exceptions import abort
+import hmac
 import json
 import os
-from spotify_api import create_spotify_client, get_currently_playing_song
+from spotify_api import create_spotify_client, get_currently_playing_song as get_spotify_now_playing
+from jellyfin_api import create_jellyfin_client, get_currently_playing_song as get_jellyfin_now_playing
 import matplotlib.pyplot as plt
 from dotenv import load_dotenv
 
@@ -13,13 +15,38 @@ load_dotenv()
 app = Flask(__name__)
 auth = HTTPBasicAuth()
 
-user = os.getenv("FLASK_USERNAME")
-password = os.getenv("FLASK_PASSWORD")
+auth_username = os.getenv("FLASK_USERNAME")
+auth_password = os.getenv("FLASK_PASSWORD")
+
+# Which service to query for the "currently playing" track on the Add page.
+# Supported: "spotify" (default), "jellyfin", or "none" to disable autofill.
+now_playing_source = os.getenv("NOW_PLAYING_SOURCE", "spotify").strip().lower()
+
+
+def fetch_currently_playing():
+    """Return (title, artist) from the configured source, or (None, None).
+
+    Network/credential/availability failures degrade gracefully so the Add
+    page always renders.
+    """
+    try:
+        if now_playing_source == "jellyfin":
+            return get_jellyfin_now_playing(create_jellyfin_client())
+        if now_playing_source == "spotify":
+            return get_spotify_now_playing(create_spotify_client())
+        # "none" or anything unrecognised: no autofill.
+        return None, None
+    except Exception as exc:
+        app.logger.warning("Now-playing lookup (%s) failed: %s", now_playing_source, exc)
+        return None, None
 
 
 @auth.verify_password
 def verify(username, password):
-    if username == user and password == password:
+    # Constant-time comparison; both credentials must match the configured values.
+    if (auth_username and auth_password
+            and hmac.compare_digest(username, auth_username)
+            and hmac.compare_digest(password, auth_password)):
         return username
 
 
@@ -93,7 +120,7 @@ def store_song_info():
     data = request.form
     title = data.get("title")
     artist = data.get("artist")
-    print(title, artists)
+    app.logger.info("store_song_info: %s - %s", title, artist)
 
     if title and artist:
         stored_song_info["title"] = title
@@ -146,13 +173,14 @@ def add_song():
         # This block of code will execute when the form is requested (GET request).
         # It displays the form where users can add a new song.
 
-        # Get the currently playing song info from Spotify API
-        sp = create_spotify_client()
-        song_title, artist_name = get_currently_playing_song(sp)
-        print(song_title, artist_name)
+        # Get the currently playing song from the configured source
+        # (Spotify or Jellyfin). Degrades gracefully to empty fields when the
+        # source is unavailable, so the Add page always renders.
+        song_title, artist_name = fetch_currently_playing()
 
         # Render the add_song.html template and pass the currently playing song info as context variables
-        return render_template('add_song.html', song_title=song_title, artist_name=artist_name)
+        return render_template('add_song.html', song_title=song_title,
+                               artist_name=artist_name, source=now_playing_source.title())
 
 
 @app.route('/edit_song/<int:song_id>', methods=['GET', 'POST'])
@@ -231,20 +259,41 @@ def statistics():
         total_production_bonus = 0
         production_bonus_std_dev = 0
 
-    # Calculate the histogram data
-    num_bins = 10
-    plt.figure(figsize=(8, 6))
-    plt.hist([song['melody_rating'] for song in songs], bins=num_bins, alpha=0.5, label='Melody')
-    plt.hist([song['instrumentation_rating'] for song in songs], bins=num_bins, alpha=0.5, label='Instrumentation')
-    plt.hist([song['storytelling_rating'] for song in songs], bins=num_bins, alpha=0.5, label='Storytelling')
-    plt.hist([song['atmosphere_rating'] for song in songs], bins=num_bins, alpha=0.5, label='Atmosphere')
-    plt.xlabel('Rating')
-    plt.ylabel('Frequency')
-    plt.title('Average Rating Histogram')
-    plt.legend(loc='upper right')
+    # Render the rating-distribution histogram, themed to match the UI.
+    surface = '#221b18'
+    text_color = '#ece7e3'
+    grid_color = '#3a2c26'
+    series = [
+        ('Melody', [s['melody_rating'] for s in songs], '#ef4444'),
+        ('Instrumentation', [s['instrumentation_rating'] for s in songs], '#f97316'),
+        ('Storytelling', [s['storytelling_rating'] for s in songs], '#facc15'),
+        ('Atmosphere', [s['atmosphere_rating'] for s in songs], '#ec4899'),
+    ]
 
-    # Save the histogram plot to a file (optional)
-    plt.savefig('static/histogram.png')
+    bins = range(1, 12)  # one bin per integer rating 1..10
+    fig, ax = plt.subplots(figsize=(9, 5), dpi=110)
+    fig.patch.set_facecolor(surface)
+    ax.set_facecolor(surface)
+
+    for label, data, color in series:
+        ax.hist(data, bins=bins, alpha=0.55, label=label, color=color,
+                edgecolor=surface, linewidth=1.2, align='left', rwidth=0.92)
+
+    ax.set_xlabel('Rating', color=text_color, fontsize=11)
+    ax.set_ylabel('Frequency', color=text_color, fontsize=11)
+    ax.set_xticks(range(1, 11))
+    ax.tick_params(colors=text_color)
+    ax.grid(axis='y', color=grid_color, linewidth=0.8, alpha=0.7)
+    ax.set_axisbelow(True)
+    for spine in ax.spines.values():
+        spine.set_color(grid_color)
+
+    legend = ax.legend(loc='upper right', frameon=True, facecolor='#2c2320',
+                       edgecolor=grid_color, labelcolor=text_color)
+
+    fig.tight_layout()
+    fig.savefig('static/histogram.png', facecolor=surface)
+    plt.close(fig)
 
     return render_template('statistics.html', num_songs=num_songs,
                            total_average=total_average,

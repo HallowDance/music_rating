@@ -1,36 +1,69 @@
-<!-- add_song.html -->
-
 {% extends "base.html" %}
 
-{% block title %}
-    Add Song
-{% endblock %}
+{% block title %}Add Song{% endblock %}
 
 {% block content %}
-    <h1>Add a New Song</h1>
-    <form method="post" action="/add">
-        <label for="title">Title:</label><br>
-        <input type="text" id="title" name="title" value="{{ song_title }}" required><br><br>
+    <div class="page-head">
+        <div>
+            <h1>Add a New Song</h1>
+            <p class="subtitle">Rate each dimension from 1 to 10, then a small production bonus.</p>
+        </div>
+        <a href="{{ url_for('index') }}" class="button btn-ghost">← Back to Library</a>
+    </div>
 
-        <label for="artist">Artist:</label><br>
-        <input type="text" id="artist" name="artist" value="{{ artist_name }}" required><br><br>
+    <div class="card card-pad form-card">
+        {% if song_title and artist_name %}
+        <div class="now-playing">
+            <span class="dot"></span>
+            <span>Now playing on {{ source or 'Spotify' }} — <strong>{{ song_title }}</strong> by {{ artist_name }}</span>
+        </div>
+        {% endif %}
 
-        <label for="melody">Melody (1-10):</label><br>
-        <input type="number" id="melody" name="melody" min="1" max="10" required><br><br>
+        <form method="post" action="/add" class="styled">
+            <div class="field-grid">
+                <div class="field col-span">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" name="title" value="{{ song_title or '' }}" placeholder="Song title" required>
+                </div>
+                <div class="field col-span">
+                    <label for="artist">Artist</label>
+                    <input type="text" id="artist" name="artist" value="{{ artist_name or '' }}" placeholder="Artist name" required>
+                </div>
 
-        <label for="instrumentation">Instrumentation (1-10):</label><br>
-        <input type="number" id="instrumentation" name="instrumentation" min="1" max="10" required><br><br>
+                <div class="field">
+                    <label for="melody">Melody <span class="hint">(1–10)</span></label>
+                    <input type="number" id="melody" name="melody" min="1" max="10" placeholder="—" required>
+                </div>
+                <div class="field">
+                    <label for="instrumentation">Instrumentation <span class="hint">(1–10)</span></label>
+                    <input type="number" id="instrumentation" name="instrumentation" min="1" max="10" placeholder="—" required>
+                </div>
+                <div class="field">
+                    <label for="storytelling">Storytelling <span class="hint">(1–10)</span></label>
+                    <input type="number" id="storytelling" name="storytelling" min="1" max="10" placeholder="—" required>
+                </div>
+                <div class="field">
+                    <label for="atmosphere">Atmosphere <span class="hint">(1–10)</span></label>
+                    <input type="number" id="atmosphere" name="atmosphere" min="1" max="10" placeholder="—" required>
+                </div>
 
-        <label for="storytelling">Storytelling (1-10):</label><br>
-        <input type="number" id="storytelling" name="storytelling" min="1" max="10" required><br><br>
+                <div class="field col-span">
+                    <label>Production Bonus</label>
+                    <div class="segmented" role="radiogroup" aria-label="Production Bonus">
+                        <input type="radio" id="pb-neg" name="production_bonus" value="-0.5">
+                        <label for="pb-neg" class="seg-neg">−0.5</label>
+                        <input type="radio" id="pb-zero" name="production_bonus" value="0" checked>
+                        <label for="pb-zero" class="seg-zero">0</label>
+                        <input type="radio" id="pb-pos" name="production_bonus" value="0.5">
+                        <label for="pb-pos" class="seg-pos">+0.5</label>
+                    </div>
+                </div>
+            </div>
 
-        <label for="atmosphere">Atmosphere (1-10):</label><br>
-        <input type="number" id="atmosphere" name="atmosphere" min="1" max="10" required><br><br>
-
-        <label for="production_bonus">Production Bonus (-0.5 to 0.5):</label><br>
-        <input type="number" id="production_bonus" name="production_bonus" step="0.1" min="-0.5" max="0.5" required><br><br>
-
-        <input type="submit" value="Add Song">
-    </form>
+            <div class="form-actions">
+                <input type="submit" value="Add Song">
+                <a href="{{ url_for('index') }}" class="back-link">Cancel</a>
+            </div>
+        </form>
+    </div>
 {% endblock %}
-

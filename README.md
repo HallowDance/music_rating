@@ -6,7 +6,7 @@ A web application to store and manage your music ratings.
 ## Features
 
 - **User Authentication**: Secure login system to manage personal ratings.
-- **Spotify Integration**: Fetches currently playing tracks from Spotify.
+- **Now-Playing Integration**: Autofills the Add page with your currently playing track from **Spotify** or **Jellyfin** (configurable).
 - **Rating System**: Allows users to rate and comment on songs.
 
 ## Installation
@@ -31,17 +31,33 @@ A web application to store and manage your music ratings.
 4. **Set Up Environment Variables**:
    Create a `.env` file in the project root with the following content:
    ```env
-   FLASK_APP=app.py
-   FLASK_ENV=development
-   SECRET_KEY=your_secret_key
+   # Login for the web UI (HTTP basic auth)
+   FLASK_USERNAME=your_username
+   FLASK_PASSWORD=your_password
+
+   # Which service autofills the "now playing" track on the Add page.
+   # Options: spotify (default), jellyfin, none
+   NOW_PLAYING_SOURCE=spotify
+
+   # Spotify (used when NOW_PLAYING_SOURCE=spotify)
    SPOTIPY_CLIENT_ID=your_spotify_client_id
    SPOTIPY_CLIENT_SECRET=your_spotify_client_secret
    SPOTIPY_REDIRECT_URI=http://localhost:8080
+
+   # Jellyfin (used when NOW_PLAYING_SOURCE=jellyfin)
+   JELLYFIN_URL=http://localhost:8096
+   JELLYFIN_API_KEY=your_jellyfin_api_key
+   JELLYFIN_USER_ID=         # optional: limit autofill to one user
    ```
+
+   **Jellyfin setup:** create an API key in Jellyfin under *Dashboard →
+   Advanced → API Keys*, set `JELLYFIN_URL` to your server address, and switch
+   `NOW_PLAYING_SOURCE` to `jellyfin`. The Add page then reads the
+   currently-playing track from Jellyfin's `/Sessions` endpoint instead of Spotify.
 
 5. **Run the Application**:
    ```bash
-   flask run
+   python app.py
    ```
    The application will be accessible at `http://127.0.0.1:5000/`.
 
